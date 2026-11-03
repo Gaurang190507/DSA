@@ -1,54 +1,36 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        vector<int> list;
         ListNode* temp = head;
-
-        while(temp != NULL) {
-            list.push_back(temp->val);
+        int count = 0;
+        while(count<k){
+            if(temp == NULL){
+                return head;
+            }
             temp = temp->next;
+            count++;
         }
 
-        int n = list.size();
-        vector<vector<int>> ans;
-        int i = 0;
-
-        while(i < n) {
-            vector<int> temp;
-            int cnt = i + k;
-
-            if(cnt <= n) {
-                while(i < cnt) {
-                    temp.push_back(list[i]);
-                    i++;
-                }
-                reverse(temp.begin(), temp.end());
-                ans.push_back(temp);
-            }
-            else {
-                while(i < n) {
-                    temp.push_back(list[i]);
-                    i++;
-                }
-                ans.push_back(temp);
-            }
+        ListNode* prevNode = reverseKGroup(temp,k);
+        ListNode* temp1 = head;
+        count = 0;
+        while(count<k){
+            ListNode* front = temp1->next;
+            temp1->next = prevNode;
+            prevNode = temp1;
+            temp1 = front;
+            count++; 
         }
-
-        vector<int> fin;
-
-        for(auto v : ans) {
-            fin.insert(fin.end(), v.begin(), v.end());
-        }
-
-        ListNode* dummy = new ListNode(-1);
-        ListNode* curr = dummy;
-
-        for(int i = 0; i < fin.size(); i++) {
-            ListNode* newN = new ListNode(fin[i]);
-            curr->next = newN;
-            curr = newN;
-        }
-
-        return dummy->next;
+        return prevNode;    
     }
 };
