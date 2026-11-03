@@ -1,19 +1,23 @@
 class Solution {
 public:
     int minMoves(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
+        unordered_map<int,int>mpp;
         int n = nums.size();
-        int maxNum = nums[n-1];
-        int moves = 0;
-        for(int i=0; i<n-1; i++){
-            if(nums[i]<maxNum){
-                while(nums[i]<maxNum){
-                    nums[i]++;
-                    moves++;
-                }
+        int maxel = *max_element(nums.begin(),nums.end());
+        for(int i=0; i<n; i++){
+            if(nums[i] != maxel){
+                mpp[nums[i]]++;
             }
-            else if(nums[i] == maxNum) continue;
         }
-        return moves;   
+        int moves = 0;
+        for(auto it : mpp){
+            if(it.second == 1){
+                moves += (maxel-it.first);
+            }
+            else if(it.second > 1){
+                moves += (it.second)*(maxel-it.first);
+            }
+        }
+        return moves;    
     }
 };
