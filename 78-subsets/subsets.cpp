@@ -1,21 +1,20 @@
 class Solution {
 public:
-    void func(int idx,vector<vector<int>>&ans,vector<int>&nums,vector<int>&temp){
-        int n = nums.size();
-        if(idx >= n){
+    void func(vector<int>&nums,vector<vector<int>>&ans,vector<int>&temp,int idx,int size){
+        if(idx == size){
             ans.push_back(temp);
             return;
         }
         temp.push_back(nums[idx]);
-        func(idx+1,ans,nums,temp);
-        temp.pop_back();
-        func(idx+1,ans,nums,temp);
+        func(nums,ans,temp,idx+1,size); //include
+        temp.pop_back();    //backtrack
+        func(nums,ans,temp,idx+1,size);    //notInclude  
     }
     vector<vector<int>> subsets(vector<int>& nums) {
         int n = nums.size();
         vector<vector<int>>ans;
         vector<int>temp;
-        func(0,ans,nums,temp); 
-        return ans;   
+        func(nums,ans,temp,0,n);
+        return ans;
     }
 };
